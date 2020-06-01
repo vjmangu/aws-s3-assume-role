@@ -9,10 +9,6 @@ var app        = express();                 // define our app using express
 
 
 
-
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-process.env.AWS_PROFILE = 'dev';
-process.env.AWS_SDK_LOAD_CONFIG=1;
 //configuring the AWS environment
 
 AWS.config.region = 'us-east-1';
