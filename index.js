@@ -17,7 +17,7 @@ AWS.config.region = 'us-east-1';
 var sts = new AWS.STS();
 var s3 = new AWS.S3();
 
-loadCredentials();
+//loadCredentials();
 
 
 //configuring parameters
