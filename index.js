@@ -13,7 +13,7 @@ var app        = express();                 // define our app using express
 
 AWS.config.region = 'us-east-1';
 
-process.env.AWS_SDK_LOAD_CONFIG = '1';
+//process.env.AWS_SDK_LOAD_CONFIG = '1';
 
 var sts = new AWS.STS();
 var s3 = new AWS.S3();
