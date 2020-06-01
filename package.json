@@ -1,0 +1,16 @@
+{
+  "name": "crud-s3",
+  "version": "1.0.0",
+  "description": "poc for s3",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo test"
+  },
+  "author": "Vamsee Mangu",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.685.0",
+    "express": "^4.0.0"
+  }
+}
