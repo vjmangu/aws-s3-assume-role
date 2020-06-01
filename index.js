@@ -49,6 +49,7 @@ async function loadCredentials() { {
 
       console.log( AWS.config.credentials);
     
+      s3 = new AWS.S3();
     }
 
   });
