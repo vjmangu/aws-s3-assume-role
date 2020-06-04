@@ -9,11 +9,14 @@ var app        = express();                 // define our app using express
 
 
 
+
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+process.env.AWS_PROFILE = 'dev';
+process.env.AWS_SDK_LOAD_CONFIG=1;
 //configuring the AWS environment
 
 AWS.config.region = 'us-east-1';
 
-//process.env.AWS_SDK_LOAD_CONFIG = '1';
 
 var sts = new AWS.STS();
 var s3 = new AWS.S3();
@@ -23,8 +26,7 @@ loadCredentials();
 
 //configuring parameters
 var params = {
-  Bucket: 'test-poc-nexgeneng',
-  Delimiter: '/'
+  Bucket: 'test-poc-nexgeneng'
 
 };
 
@@ -49,7 +51,6 @@ async function loadCredentials() { {
 
       console.log( AWS.config.credentials);
     
-      s3 = new AWS.S3();
     }
 
   });
@@ -74,6 +75,24 @@ router.get('/buckets',function(req, res){
   };
   res.json(JSON.stringify(data)); 
   });
+});
+
+router.get('/images/:imageName',function(req, res){
+  if(req.params.imageName){
+    params.Key = `${req.params.imageName}.png`;
+    s3.getObject(params, function(err, data) {
+      if (err) {
+        console.log(err, err.stack); // an error occurred
+        res.send(err);
+      }
+      else {
+        res.json(data);
+      };           // successful response
+    });
+  }
+  else{
+    res.json({ message: 'image not found!' }); 
+  }
 });
 
 
