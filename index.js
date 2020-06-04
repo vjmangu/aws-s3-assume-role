@@ -86,8 +86,9 @@ router.get('/images/:imageName',function(req, res){
         res.send(err);
       }
       else {
-        res.header('content-type','image/png');
-        res.json(data.Body.data);
+        res.writeHead(200, {'Content-Type': 'image/jpeg'});
+        res.write(data.Body, 'binary');
+        res.end(null, 'binary');
       };           // successful response
     });
   }
