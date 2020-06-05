@@ -109,9 +109,12 @@ router.get('/file/:fileName',function(req, res){
     Bucket: 'test-poc-nexgeneng'
   };  
   if(req.params.fileName){
-    params.Key = `${req.params.fileName}.passiosecure`;
+   
     if( req.query.type){
       params.Key = req.params.fileName+'.'+req.query.type;
+    }
+    else{
+       params.Key = `${req.params.fileName}.passiosecure`;
     }
     s3.getObject(params, function(err, data) {
       if (err) {
