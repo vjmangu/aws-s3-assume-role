@@ -68,6 +68,9 @@ router.get('/', function(req, res) {
 });
 
 router.get('/buckets',function(req, res){
+  var params = {
+    Bucket: 'test-poc-nexgeneng'
+  };  
   s3.listObjects(params, function (err, data) {
     if(err){
     console.log(err);
@@ -78,6 +81,9 @@ router.get('/buckets',function(req, res){
 });
 
 router.get('/images/:imageName',function(req, res){
+  var params = {
+    Bucket: 'test-poc-nexgeneng'
+  };  
   if(req.params.imageName){
     params.Key = `${req.params.imageName}.png`;
     s3.getObject(params, function(err, data) {
@@ -97,9 +103,36 @@ router.get('/images/:imageName',function(req, res){
   }
 });
 
+//get file download
+router.get('/file/:fileName',function(req, res){
+  var params = {
+    Bucket: 'test-poc-nexgeneng'
+  };  
+  if(req.params.fileName){
+    params.Key = `${req.params.fileName}.passiosecure`;
+    if( req.query.type){
+      params.Key = req.params.fileName+'.'+req.query.type;
+    }
+    s3.getObject(params, function(err, data) {
+      if (err) {
+        console.log(err, err.stack); // an error occurred
+        res.send(err);
+      }
+      else {
+        res.set('Content-Disposition', 'attachment');
+        return res.send(data.Body);
+
+      };           // successful response
+    });
+  }
+  else{
+    res.json({ message: 'image not found!' }); 
+  }
+});
+
+
 
 app.use('/api', router);
 
 app.listen(port);
-
 
