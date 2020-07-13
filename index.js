@@ -84,6 +84,8 @@ var ttl = 30;
 var silent = false;
 function CreateMessageRequest() {
   var token = recipient['token'];
+  var service = recipient['service'];
+
   if (service == 'APNS') {
     var messageRequest = {
       'Addresses': {
