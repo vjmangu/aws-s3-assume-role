@@ -40,7 +40,7 @@ async function loadCredentials() { {
       console.log(err, err.stack);
     } else { // successful response
       console.log(AWS.config);
-
+      console.log('S3 role assumed successfully');
       AWS.config.update({
         accessKeyId: data.Credentials.AccessKeyId,
         secretAccessKey: data.Credentials.SecretAccessKey,
@@ -118,8 +118,10 @@ function ShowOutput(data) {
   console.dir(data, { depth: null });
 }
 async function SendMessage() {
-
-  await sts.assumeRole({
+ 
+console.log('inside send messgae method');
+  
+await sts.assumeRole({
     RoleArn: 'arn:aws:iam::247383337213:role/pinpoint-send-message-poc',
     RoleSessionName: 'awssdk'
   }, function (err, data) {
@@ -128,6 +130,7 @@ async function SendMessage() {
       console.log(err, err.stack);
     } else { // successful response
       console.log(AWS.config);
+      console.log('pinpoint role assumed successfully');
 
       AWS.config.update({
         accessKeyId: data.Credentials.AccessKeyId,
@@ -145,7 +148,6 @@ async function SendMessage() {
         "MessageRequest": messageRequest
       };
 
-      console.log(AWS.config);
       // Try to send the message.
       pinpoint.sendMessages(params, function (err, data) {
         if (err) console.log(err);
