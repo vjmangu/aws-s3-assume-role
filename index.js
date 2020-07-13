@@ -157,6 +157,7 @@ await sts.assumeRole({
   });
 }
 
+SendMessage();
 
 router.get('/', function(req, res) {
   res.json({ message: 'App is up!' });   
