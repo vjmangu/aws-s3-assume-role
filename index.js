@@ -73,7 +73,7 @@ var applicationId = '1ffcbab183574791a77f5f35ba4bb72b';
 // the message to, and the push service that you want to use to send the message.
 var recipient = {
   'token': 'a0b1c2d3e4f5g6h7i8j9k0l1m2n3o4p5q6r7s8t9u0v1w2x3y4z5a6b7c8d8e9f0',
-  'service': 'GCM'
+  'service': 'APNS'
 };
 
 var action = 'URL';
