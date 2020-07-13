@@ -59,8 +59,101 @@ async function loadCredentials() { {
 }
 }
 
+//Test code 
 
+var title = 'Test message sent from Amazon Pinpoint.';
 
+// The content of the push notification.
+var message = 'This is a sample message sent from Amazon Pinpoint by using the '
+  + 'AWS SDK for JavaScript in Node.js';
+
+var applicationId = '1ffcbab183574791a77f5f35ba4bb72b';
+
+// An object that contains the unique token of the device that you want to send 
+// the message to, and the push service that you want to use to send the message.
+var recipient = {
+  'token': 'a0b1c2d3e4f5g6h7i8j9k0l1m2n3o4p5q6r7s8t9u0v1w2x3y4z5a6b7c8d8e9f0',
+  'service': 'GCM'
+};
+
+var action = 'URL';
+var url = 'https://www.google.com';
+var priority = 'normal';
+var ttl = 30;
+
+var silent = false;
+function CreateMessageRequest() {
+  var token = recipient['token'];
+  if (service == 'APNS') {
+    var messageRequest = {
+      'Addresses': {
+        [token]: {
+          'ChannelType': 'APNS'
+        }
+      },
+      'MessageConfiguration': {
+        'APNSMessage': {
+          'Action': action,
+          'Body': message,
+          'Priority': priority,
+          'SilentPush': silent,
+          'Title': title,
+          'TimeToLive': ttl,
+          'Url': url
+        }
+      }
+    };
+  }
+  return messageRequest
+}
+
+function ShowOutput(data) {
+  if (data["MessageResponse"]["Result"][recipient["token"]]["DeliveryStatus"]
+    == "SUCCESSFUL") {
+    var status = "Message sent! Response information: ";
+  } else {
+    var status = "The message wasn't sent. Response information: ";
+  }
+  console.log(status);
+  console.dir(data, { depth: null });
+}
+function SendMessage() {
+
+  await sts.assumeRole({
+    RoleArn: 'arn:aws:iam::247383337213:role/pinpoint-send-message-poc',
+    RoleSessionName: 'awssdk'
+  }, function (err, data) {
+    if (err) { // an error occurred
+      console.log('Cannot assume role');
+      console.log(err, err.stack);
+    } else { // successful response
+      console.log(AWS.config);
+
+      AWS.config.update({
+        accessKeyId: data.Credentials.AccessKeyId,
+        secretAccessKey: data.Credentials.SecretAccessKey,
+        sessionToken: data.Credentials.SessionToken
+      });
+      var token = recipient['token'];
+      var service = recipient['service'];
+      var messageRequest = CreateMessageRequest();
+
+      //Create a new Pinpoint object.
+      var pinpoint = new AWS.Pinpoint();
+      var params = {
+        "ApplicationId": applicationId,
+        "MessageRequest": messageRequest
+      };
+
+      console.log(AWS.config);
+      // Try to send the message.
+      pinpoint.sendMessages(params, function (err, data) {
+        if (err) console.log(err);
+        else ShowOutput(data);
+      });
+    }
+  });
+}
 
 
 router.get('/', function(req, res) {
