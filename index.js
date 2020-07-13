@@ -117,7 +117,7 @@ function ShowOutput(data) {
   console.log(status);
   console.dir(data, { depth: null });
 }
-function SendMessage() {
+async function SendMessage() {
 
   await sts.assumeRole({
     RoleArn: 'arn:aws:iam::247383337213:role/pinpoint-send-message-poc',
