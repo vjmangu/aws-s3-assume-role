@@ -10,7 +10,7 @@
   "author": "Vamsee Mangu",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.685.0",
+    "aws-sdk": "^2.814.0",
     "express": "^4.0.0"
   }
 }
